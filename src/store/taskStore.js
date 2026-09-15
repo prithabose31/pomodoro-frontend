@@ -3,7 +3,8 @@ import {
   getTasks,
   createTask,
   updateTask,
-  deleteTask
+  deleteTask,
+  updateWeeklyGoal
 } from '../services/taskService'
 
 const useTaskStore = create((set, get) => ({
@@ -33,6 +34,27 @@ const useTaskStore = create((set, get) => ({
     })
   },
 
+  updateTaskWeeklyGoal: async (id, weeklyGoalMinutes) => {
+  const task = get().tasks.find(t => t.id === id)
+
+  if (!task) return
+
+  const updated = await updateTask(id, {
+    title: task.title,
+    description: task.description,
+    status: task.status,
+    categoryId: task.categoryId,
+    weeklyGoalMinutes,
+    subtasks: task.subtasks || []
+  })
+
+  set({
+    tasks: get().tasks.map(t =>
+      t.id === id ? updated : t
+    )
+  })
+},
+
   removeTask: async (id) => {
     await deleteTask(id)
     set({
@@ -40,12 +62,48 @@ const useTaskStore = create((set, get) => ({
     })
   },
 
+  updateTaskWeeklyGoal: async (taskId, weeklyGoalMinutes) => {
+  const task = get().tasks.find(t => t.id === taskId)
+
+  if (!task) return
+
+  const updated = await updateTask(taskId, {
+    title: task.title,
+    description: task.description,
+    status: task.status,
+    categoryId: task.categoryId,
+    weeklyGoalMinutes,
+    subtasks: task.subtasks || []
+  })
+
+  set({
+    tasks: get().tasks.map(t =>
+      t.id === taskId ? updated : t
+    )
+  })
+},
+
   updateTimeSpent: (taskId, minutesToAdd) => {
   set({
     tasks: get().tasks.map(t =>
       t.id === taskId
         ? { ...t, timeSpentMinutes: (t.timeSpentMinutes || 0) + minutesToAdd }
         : t
+    )
+  })
+},
+
+  updateTaskWeeklyGoal: async (taskId, weeklyGoalMinutes) => {
+  await updateWeeklyGoal(taskId, weeklyGoalMinutes)
+
+  set({
+    tasks: get().tasks.map(task =>
+      task.id === taskId
+        ? {
+            ...task,
+            weeklyGoalMinutes
+          }
+        : task
     )
   })
 },

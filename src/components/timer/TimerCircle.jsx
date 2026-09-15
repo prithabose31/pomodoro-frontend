@@ -1,27 +1,47 @@
 function TimerCircle({ formattedTime, progress, phase }) {
-  const size = 260
+  const size = 280
   const strokeWidth = 10
   const radius = (size - strokeWidth) / 2
   const circumference = 2 * Math.PI * radius
-  const strokeDashoffset = circumference * (1 - progress)
+  const strokeDashoffset =
+    circumference * (1 - progress)
 
   const phaseColor = {
-    idle:  '#6366f1',
-    work:  '#8b5cf6',
-    break: '#10b981',
-    done:  '#f59e0b'
-  }[phase] || '#8b5cf6'
+    idle: '#B8A99A',
+    work: '#C97862',
+    break: '#6F8A68',
+    done: '#B68A45'
+  }[phase] || '#C97862'
+
+  const phaseBackground = {
+    idle: '#F1E9E0',
+    work: '#F3DDD4',
+    break: '#E2EBDD',
+    done: '#F4EBD8'
+  }[phase] || '#F3DDD4'
 
   const phaseLabel = {
-    idle:  'READY',
-    work:  'FOCUS',
+    idle: 'READY',
+    work: 'FOCUS',
     break: 'BREAK',
-    done:  'DONE!'
+    done: 'DONE!'
   }[phase] || 'READY'
 
   return (
-    <div className="flex items-center justify-center">
-      <div className="relative">
+    <div className="
+      flex
+      items-center
+      justify-center
+    ">
+      <div className="
+        relative
+        bg-[#FFFDF8]
+        rounded-full
+        p-3
+        shadow-sm
+        border border-[#E8DED2]
+      ">
+
         <svg
           width={size}
           height={size}
@@ -33,9 +53,10 @@ function TimerCircle({ formattedTime, progress, phase }) {
             cy={size / 2}
             r={radius}
             fill="none"
-            stroke="#374151"
+            stroke="#EDE5DB"
             strokeWidth={strokeWidth}
           />
+
           {/* Progress circle */}
           <circle
             cx={size / 2}
@@ -47,24 +68,52 @@ function TimerCircle({ formattedTime, progress, phase }) {
             strokeLinecap="round"
             strokeDasharray={circumference}
             strokeDashoffset={strokeDashoffset}
-            style={{ transition: 'stroke-dashoffset 1s linear' }}
+            style={{
+              transition: 'stroke-dashoffset 1s linear'
+            }}
           />
         </svg>
 
-        {/* Center text */}
-        <div className="absolute inset-0 flex flex-col
-                        items-center justify-center">
-          <span className="text-5xl font-bold text-white
-                           font-mono tracking-wider">
+        {/* Center */}
+        <div className="
+          absolute
+          inset-0
+          flex
+          flex-col
+          items-center
+          justify-center
+        ">
+
+          <span className="
+            text-5xl
+            sm:text-6xl
+            font-bold
+            text-[#3D3833]
+            font-mono
+            tracking-wider
+          ">
             {formattedTime}
           </span>
+
           <span
-            className="text-sm font-semibold mt-1 tracking-widest"
-            style={{ color: phaseColor }}
+            className="
+              text-xs
+              font-bold
+              mt-2
+              tracking-[0.25em]
+              px-3 py-1
+              rounded-full
+            "
+            style={{
+              color: phaseColor,
+              backgroundColor: phaseBackground
+            }}
           >
             {phaseLabel}
           </span>
+
         </div>
+
       </div>
     </div>
   )

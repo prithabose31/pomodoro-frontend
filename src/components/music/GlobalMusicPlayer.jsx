@@ -1,4 +1,5 @@
 import { useState } from 'react'
+
 import AmbientPlaylists from './AmbientPlaylists'
 import YouTubeSearch from './YouTubeSearch'
 import useMusicStore from '../../store/musicStore'
@@ -12,226 +13,301 @@ function GlobalMusicPlayer() {
     clearVideo
   } = useMusicStore()
 
-  const toggleExpanded = () => {
-    setIsExpanded(prev => !prev)
-  }
-
   return (
-    <div className="w-full bg-gray-900 border-t border-gray-700 shadow-2xl">
+    <div className="
+      bg-[#FFFDF8]
+      border-t border-[#E8DED2]
+      shadow-[0_-4px_20px_rgba(61,56,51,0.08)]
+    ">
 
-      {/* ================================================= */}
-      {/* MINI PLAYER BAR - ALWAYS VISIBLE                 */}
-      {/* ================================================= */}
+      {/* Collapsed bar */}
+      <div className="
+        flex
+        items-center
+        justify-between
+        px-4
+        py-3
+        min-h-[64px]
+      ">
 
-      <div className="flex items-center justify-between px-4 py-3">
+        <div className="
+          flex
+          items-center
+          gap-3
+          min-w-0
+        ">
 
-        {/* LEFT SIDE */}
-        <div className="flex items-center gap-3 min-w-0">
-
-          {/* Expand / Minimize button */}
+          {/* Expand */}
           <button
-            onClick={toggleExpanded}
-            className="w-8 h-8 flex-shrink-0
-                       rounded-lg
-                       bg-gray-800
-                       hover:bg-gray-700
-                       text-gray-300
-                       hover:text-white
-                       transition
-                       flex items-center justify-center"
-            title={isExpanded ? 'Minimize music player' : 'Open music player'}
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="
+              w-9 h-9
+              rounded-xl
+              bg-[#F3EDE5]
+              hover:bg-[#EAE0D5]
+              text-[#81776D]
+              hover:text-[#5F574F]
+              transition
+              flex
+              items-center
+              justify-center
+              flex-shrink-0
+            "
+            title={isExpanded ? 'Collapse player' : 'Open player'}
           >
             {isExpanded ? '▼' : '▲'}
           </button>
 
           {/* Music icon */}
-          <span className="text-lg flex-shrink-0">
+          <div className="
+            w-9 h-9
+            rounded-xl
+            bg-[#EEE6F2]
+            flex
+            items-center
+            justify-center
+            text-lg
+            flex-shrink-0
+          ">
             🎵
-          </span>
+          </div>
 
-          {/* Current song */}
+          {/* Current track */}
           {currentVideoId ? (
-            <div className="flex items-center gap-2 min-w-0">
-
-              <span className="text-green-400 text-xs animate-pulse flex-shrink-0">
+            <div className="
+              flex
+              items-center
+              gap-2
+              min-w-0
+            ">
+              <span className="
+                text-[#6F8A68]
+                text-xs
+                font-semibold
+                animate-pulse
+                flex-shrink-0
+              ">
                 ▶ Playing
               </span>
 
-              <span
-                className="text-white text-sm font-medium truncate
-                           max-w-[180px] sm:max-w-[400px]"
-              >
-                {currentTitle || 'Unknown song'}
+              <span className="
+                text-[#4F4841]
+                text-sm
+                font-medium
+                truncate
+                max-w-[180px]
+                sm:max-w-[400px]
+              ">
+                {currentTitle}
               </span>
-
             </div>
           ) : (
-            <span className="text-gray-400 text-sm truncate">
+            <span className="
+              text-[#8A8178]
+              text-sm
+              truncate
+            ">
               No music playing — pick something below
             </span>
           )}
 
         </div>
 
+        {/* Actions */}
+        <div className="
+          flex
+          items-center
+          gap-2
+          ml-3
+          flex-shrink-0
+        ">
 
-        {/* RIGHT SIDE */}
-        <div className="flex items-center gap-3 flex-shrink-0">
-
-          {/* Stop music */}
           {currentVideoId && (
             <button
               onClick={clearVideo}
-              className="text-gray-500
-                         hover:text-red-400
-                         transition
-                         text-sm"
+              className="
+                hidden sm:block
+                text-[#8A8178]
+                hover:text-[#A85E52]
+                text-sm
+                px-3
+                py-2
+                rounded-xl
+                hover:bg-[#F8E4DF]
+                transition
+              "
               title="Stop music"
             >
               ⏹ Stop
             </button>
           )}
 
-          {/* Expand / Minimize */}
           <button
-            onClick={toggleExpanded}
-            className="bg-purple-600
-                       hover:bg-purple-700
-                       text-white
-                       text-xs
-                       px-3
-                       py-1.5
-                       rounded-lg
-                       transition"
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="
+              bg-[#D49A84]
+              hover:bg-[#C88972]
+              text-white
+              text-xs
+              font-semibold
+              px-3.5
+              py-2
+              rounded-xl
+              transition-all
+              duration-200
+              hover:-translate-y-0.5
+              shadow-sm
+            "
           >
-            {isExpanded ? 'Minimize' : 'Open Player'}
+            {isExpanded ? 'Close' : 'Open Player'}
           </button>
 
         </div>
 
       </div>
 
-
-      {/* ================================================= */}
-      {/* EXPANDED MUSIC PLAYER                            */}
-      {/* ================================================= */}
-
+      {/* YouTube player */}
       {currentVideoId && (
         <div
-          className="border-t border-gray-700 bg-gray-800"
           style={{
-            display: isExpanded ? 'block' : 'none',
-            maxHeight: '60vh',
-            overflowY: 'auto'
+            display: isExpanded ? 'block' : 'none'
           }}
+          className="
+            border-t
+            border-[#E8DED2]
+            bg-[#F7F1E8]
+          "
         >
+          <div className="
+            max-w-3xl
+            mx-auto
+            px-4
+            py-4
+          ">
 
-          <div className="max-w-3xl mx-auto px-4 py-4">
+            {/* Now playing */}
+            <div className="
+              flex
+              items-center
+              justify-between
+              bg-[#FFFDF8]
+              border border-[#E8DED2]
+              rounded-2xl
+              px-4
+              py-3
+              mb-4
+            ">
 
-            {/* NOW PLAYING */}
-            <div
-              className="flex items-center justify-between
-                         bg-gray-700
-                         rounded-xl
-                         px-4
-                         py-3
-                         mb-4"
-            >
-
-              <div className="flex items-center gap-3 min-w-0">
-
-                <span className="text-green-400 text-sm animate-pulse flex-shrink-0">
+              <div className="
+                flex
+                items-center
+                gap-3
+                min-w-0
+              ">
+                <span className="
+                  text-[#6F8A68]
+                  text-sm
+                  font-semibold
+                  animate-pulse
+                  flex-shrink-0
+                ">
                   ▶ Playing
                 </span>
 
-                <span
-                  className="text-white
-                             text-sm
-                             font-medium
-                             truncate
-                             max-w-[200px]"
-                >
-                  {currentTitle || 'Unknown song'}
+                <span className="
+                  text-[#4F4841]
+                  text-sm
+                  font-medium
+                  truncate
+                ">
+                  {currentTitle}
                 </span>
-
               </div>
 
-              {/* Stop */}
               <button
                 onClick={clearVideo}
-                className="text-gray-400
-                           hover:text-red-400
-                           transition
-                           text-lg
-                           ml-3"
-                title="Stop music"
+                className="
+                  w-8 h-8
+                  rounded-lg
+                  text-[#8A8178]
+                  hover:text-[#A85E52]
+                  hover:bg-[#F8E4DF]
+                  transition
+                  flex
+                  items-center
+                  justify-center
+                  text-lg
+                  flex-shrink-0
+                "
               >
                 ×
               </button>
 
             </div>
 
-
-            {/* ================================================= */}
-            {/* YOUTUBE VIDEO                                    */}
-            {/* ================================================= */}
-
+            {/* Iframe stays mounted so music doesn't stop */}
             <div
-              className="relative
-                         w-full
-                         rounded-xl
-                         overflow-hidden"
-              style={{
-                paddingBottom: '35%'
-              }}
+              className="
+                relative
+                w-full
+                rounded-2xl
+                overflow-hidden
+                border border-[#E8DED2]
+                shadow-sm
+              "
+              style={{ paddingBottom: '56.25%' }}
             >
-
               <iframe
-                className="absolute
-                           top-0
-                           left-0
-                           w-full
-                           h-full"
+                className="
+                  absolute
+                  top-0
+                  left-0
+                  w-full
+                  h-full
+                "
                 src={`https://www.youtube.com/embed/${currentVideoId}?autoplay=1&rel=0`}
-                title={currentTitle || 'YouTube music player'}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                title={currentTitle}
+                allow="
+                  accelerometer;
+                  autoplay;
+                  clipboard-write;
+                  encrypted-media;
+                  gyroscope;
+                  picture-in-picture
+                "
                 allowFullScreen
               />
-
             </div>
 
           </div>
-
         </div>
       )}
 
-
-      {/* ================================================= */}
-      {/* PLAYLISTS + SEARCH                               */}
-      {/* ================================================= */}
-
+      {/* Search / playlists */}
       {isExpanded && (
-        <div
-          className="border-t
-                     border-gray-700
-                     bg-gray-800
-                     px-4
-                     py-5
-                     max-h-[35vh]
-                     overflow-y-auto"
-        >
-
-          <div className="max-w-3xl mx-auto space-y-6">
-
-            {/* Ambient playlists */}
+        <div className="
+          border-t
+          border-[#E8DED2]
+          bg-[#FFFDF8]
+          px-4
+          py-5
+          max-h-[50vh]
+          overflow-y-auto
+        ">
+          <div className="
+            max-w-3xl
+            mx-auto
+            space-y-6
+          ">
             <AmbientPlaylists />
 
-            <div className="border-t border-gray-700" />
+            <div className="
+              border-t
+              border-[#E8DED2]
+            " />
 
-            {/* YouTube search */}
             <YouTubeSearch />
-
           </div>
-
         </div>
       )}
 

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+
 import ColorPicker from './ColorPicker'
 import EmojiPicker from './EmojiPicker'
 
@@ -6,15 +7,25 @@ const getInitialCategoryForm = (category) => ({
   name: category?.name || '',
   description: category?.description || '',
   emoji: category?.emoji || '💼',
-  color: category?.color || '#8b5cf6'
+  color: category?.color || '#C97862'
 })
 
-function CategoryModal({ isOpen, onClose, onSave, onDelete, existingCategory }) {
-  const [form, setForm] = useState(() => getInitialCategoryForm(existingCategory))
+function CategoryModal({
+  isOpen,
+  onClose,
+  onSave,
+  onDelete,
+  existingCategory
+}) {
+  const [form, setForm] = useState(() =>
+    getInitialCategoryForm(existingCategory)
+  )
 
   const handleSubmit = (e) => {
     e.preventDefault()
+
     if (!form.name.trim()) return
+
     onSave(form)
     onClose()
   }
@@ -22,46 +33,124 @@ function CategoryModal({ isOpen, onClose, onSave, onDelete, existingCategory }) 
   if (!isOpen) return null
 
   return (
-    // Backdrop
     <div
-      className="fixed inset-0 bg-black/60 backdrop-blur-sm
-                 flex items-center justify-center z-50 px-4"
+      className="
+        fixed inset-0
+        bg-[#3D3833]/30
+        backdrop-blur-sm
+        flex items-center justify-center
+        z-50
+        px-4
+        py-6
+      "
       onClick={onClose}
     >
-      {/* Modal Box */}
+      {/* Modal */}
       <div
-        className="bg-gray-800 rounded-2xl p-6 w-full max-w-md
-                   border border-gray-700 shadow-2xl"
+        className="
+          bg-[#FFFDF8]
+          rounded-3xl
+          p-6
+          sm:p-7
+          w-full
+          max-w-md
+          max-h-[90vh]
+          overflow-y-auto
+
+          border border-[#E8DED2]
+          shadow-2xl
+          shadow-[#3D3833]/10
+        "
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-white text-xl font-bold">
-            {existingCategory ? 'Edit Category' : 'New Category'}
-          </h2>
+          <div>
+            <p className="
+              text-[#A09287]
+              text-xs
+              font-medium
+              uppercase
+              tracking-wide
+              mb-1
+            ">
+              Categories
+            </p>
+
+            <h2 className="
+              text-[#3D3833]
+              text-xl
+              font-bold
+            ">
+              {existingCategory
+                ? 'Edit Category'
+                : 'New Category'}
+            </h2>
+          </div>
+
           <button
+            type="button"
             onClick={onClose}
-            className="text-gray-400 hover:text-white transition text-2xl"
+            className="
+              w-9 h-9
+              rounded-xl
+              flex items-center justify-center
+              text-[#8A8178]
+              hover:text-[#5F574F]
+              hover:bg-[#F7F1E8]
+              transition-colors
+              text-2xl
+            "
           >
             ×
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
+
           {/* Preview */}
           <div
-            className="flex items-center gap-3 p-3 rounded-xl"
-            style={{ backgroundColor: form.color + '15' }}
+            className="
+              flex
+              items-center
+              gap-3
+              p-4
+              rounded-2xl
+              border
+              border-[#E8DED2]
+            "
+            style={{
+              backgroundColor: form.color + '12'
+            }}
           >
-            <span className="text-3xl">{form.emoji}</span>
-            <div>
+            <div
+              className="
+                w-12 h-12
+                rounded-xl
+                flex items-center justify-center
+                text-3xl
+              "
+              style={{
+                backgroundColor: form.color + '20'
+              }}
+            >
+              {form.emoji}
+            </div>
+
+            <div className="min-w-0">
               <p
-                className="font-semibold"
+                className="font-semibold truncate"
                 style={{ color: form.color }}
               >
                 {form.name || 'Category Name'}
               </p>
-              <p className="text-gray-400 text-xs">
+
+              <p className="
+                text-[#8A8178]
+                text-xs
+                truncate
+                mt-0.5
+              ">
                 {form.description || 'Description'}
               </p>
             </div>
@@ -69,90 +158,205 @@ function CategoryModal({ isOpen, onClose, onSave, onDelete, existingCategory }) 
 
           {/* Name */}
           <div>
-            <label className="block text-gray-400 text-sm mb-2">
+            <label className="
+              block
+              text-[#625A52]
+              text-sm
+              font-medium
+              mb-2
+            ">
               Name
             </label>
+
             <input
               type="text"
               value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  name: e.target.value
+                })
+              }
               placeholder="e.g. Work, DSA, Learning..."
-              className="w-full bg-gray-700 text-white rounded-lg px-4 py-3
-                         border border-gray-600 focus:border-purple-500
-                         focus:outline-none focus:ring-1 focus:ring-purple-500
-                         placeholder-gray-500 transition"
+              className="
+                w-full
+                bg-[#FFFDF8]
+                text-[#3D3833]
+                rounded-xl
+                px-4
+                py-3
+
+                border border-[#DCCFC2]
+
+                focus:border-[#C97862]
+                focus:outline-none
+                focus:ring-2
+                focus:ring-[#C97862]/15
+
+                placeholder-[#B0A59A]
+
+                transition
+              "
               required
             />
           </div>
 
           {/* Description */}
           <div>
-            <label className="block text-gray-400 text-sm mb-2">
+            <label className="
+              block
+              text-[#625A52]
+              text-sm
+              font-medium
+              mb-2
+            ">
               Description
             </label>
+
             <input
               type="text"
               value={form.description}
-              onChange={(e) => setForm({ ...form, description: e.target.value })}
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  description: e.target.value
+                })
+              }
               placeholder="What is this category for?"
-              className="w-full bg-gray-700 text-white rounded-lg px-4 py-3
-                         border border-gray-600 focus:border-purple-500
-                         focus:outline-none focus:ring-1 focus:ring-purple-500
-                         placeholder-gray-500 transition"
+              className="
+                w-full
+                bg-[#FFFDF8]
+                text-[#3D3833]
+                rounded-xl
+                px-4
+                py-3
+
+                border border-[#DCCFC2]
+
+                focus:border-[#C97862]
+                focus:outline-none
+                focus:ring-2
+                focus:ring-[#C97862]/15
+
+                placeholder-[#B0A59A]
+
+                transition
+              "
             />
           </div>
 
           {/* Emoji */}
           <div>
-            <label className="block text-gray-400 text-sm mb-2">
+            <label className="
+              block
+              text-[#625A52]
+              text-sm
+              font-medium
+              mb-2
+            ">
               Icon
             </label>
+
             <EmojiPicker
               selected={form.emoji}
-              onSelect={(emoji) => setForm({ ...form, emoji })}
+              onSelect={(emoji) =>
+                setForm({
+                  ...form,
+                  emoji
+                })
+              }
             />
           </div>
 
           {/* Color */}
           <div>
-            <label className="block text-gray-400 text-sm mb-2">
+            <label className="
+              block
+              text-[#625A52]
+              text-sm
+              font-medium
+              mb-2
+            ">
               Color
             </label>
+
             <ColorPicker
               selected={form.color}
-              onSelect={(color) => setForm({ ...form, color })}
+              onSelect={(color) =>
+                setForm({
+                  ...form,
+                  color
+                })
+              }
             />
           </div>
 
           {/* Buttons */}
-          <div className="flex gap-3 pt-2">
-            <button
-              type="button"
-              onClick={onClose}
-              className="flex-1 bg-gray-700 hover:bg-gray-600 text-white
-                         rounded-lg py-3 transition"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="flex-1 bg-purple-600 hover:bg-purple-700 text-white
-                         font-semibold rounded-lg py-3 transition"
-            >
-              {existingCategory ? 'Save Changes' : 'Create'}
-            </button>
-            {/* Delete button — only show when editing */}
-            {existingCategory && (
-            <button
+          <div className="pt-2 space-y-3">
+
+            <div className="flex gap-3">
+              <button
                 type="button"
-                onClick={() => onDelete(existingCategory.id)}
-                className="w-full bg-red-600/20 hover:bg-red-600/40 text-red-400
-                        rounded-lg py-2.5 transition text-sm mt-1"
-            >
+                onClick={onClose}
+                className="
+                  flex-1
+                  bg-[#F3EDE5]
+                  hover:bg-[#EAE0D5]
+                  text-[#625A52]
+                  rounded-xl
+                  py-3
+                  font-medium
+                  transition
+                "
+              >
+                Cancel
+              </button>
+
+              <button
+                type="submit"
+                className="
+                  flex-1
+                  bg-[#D49A84]
+                  hover:bg-[#C88972]
+                  text-white
+                  font-semibold
+                  rounded-xl
+                  py-3
+                  transition-all
+                  hover:-translate-y-0.5
+                "
+              >
+                {existingCategory
+                  ? 'Save Changes'
+                  : 'Create'}
+              </button>
+            </div>
+
+            {/* Delete */}
+            {existingCategory && (
+              <button
+                type="button"
+                onClick={() =>
+                  onDelete(existingCategory.id)
+                }
+                className="
+                  w-full
+                  bg-[#F8E4DF]
+                  hover:bg-[#F2D6D0]
+                  text-[#A85E52]
+                  rounded-xl
+                  py-2.5
+                  transition
+                  text-sm
+                  font-medium
+                "
+              >
                 Delete Category
-            </button>
+              </button>
             )}
+
           </div>
+
         </form>
       </div>
     </div>

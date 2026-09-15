@@ -23,3 +23,12 @@ export const logPomodoroTime = async (taskId, minutes) => {
   const response = await api.post(`/tasks/${taskId}/log-time`, { minutes })
   return response.data
 }
+
+export const updateWeeklyGoal = async (taskId, weeklyGoalMinutes) => {
+  const response = await api.put(
+    `/tasks/${taskId}/weekly-goal`,
+    { weeklyGoalMinutes }
+  )
+
+  return response.data
+}

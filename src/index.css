@@ -1,3 +1,48 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  html {
+    font-family: Helvetica, Arial, sans-serif;
+  }
+
+  body {
+    margin: 0;
+    background-color: #f7f1e8;
+    color: #3d3833;
+    font-family: Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font-family: inherit;
+  }
+
+  ::selection {
+    background-color: #e9b7a5;
+    color: #3d3833;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f7f1e8;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #d8c9ba;
+    border-radius: 999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #c7b5a5;
+  }
+}
