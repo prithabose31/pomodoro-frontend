@@ -1,11 +1,36 @@
 import useMusicStore from '../../store/musicStore'
 
 const PLAYLISTS = [
-  { id: 'lofi',       label: 'Lo-fi',       emoji: '🎵', videoId: 'jfKfPfyJRdk' },
-  { id: 'nature',     label: 'Nature',      emoji: '🌿', videoId: 'eKFTSSKCzWA' },
-  { id: 'jazz',       label: 'Jazz',        emoji: '🎷', videoId: 'Dx5qFachd3A' },
-  { id: 'classical',  label: 'Classical',   emoji: '🎻', videoId: '4Tr0otuiQuU' },
-  { id: 'deepfocus',  label: 'Deep Focus',  emoji: '🧠', videoId: 'b1aQOfxlE3Y' },
+  {
+    id: 'focus',
+    label: 'Focus',
+    emoji: '🎧',
+    videoId: '53gNFOqDFcE'
+  },
+  {
+    id: 'rain',
+    label: 'Rain',
+    emoji: '🌧️',
+    videoId: 'TsRgQuud3Sk'
+  },
+  {
+    id: 'cafe',
+    label: 'Café',
+    emoji: '☕',
+    videoId: 'RrwT3nHojSY'
+  },
+  {
+    id: 'piano',
+    label: 'Piano',
+    emoji: '🎹',
+    videoId: 'K5_sBujU-mU'
+  },
+  {
+    id: 'nature',
+    label: 'Nature',
+    emoji: '🌿',
+    videoId: '5lCRsLjMeso'
+  }
 ]
 
 function AmbientPlaylists() {
@@ -13,25 +38,40 @@ function AmbientPlaylists() {
 
   return (
     <div>
-      <p className="text-gray-400 text-sm mb-3 font-medium">
-        Ambient Playlists
+      <p className="text-sm font-medium mb-3 text-[#9a8878]">
+        FocusFlow Sounds
       </p>
+
       <div className="flex flex-wrap gap-2">
-        {PLAYLISTS.map(p => (
-          <button
-            key={p.id}
-            onClick={() => setVideo(p.videoId, p.label)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl
-                        text-sm font-medium transition duration-200
-                        ${currentVideoId === p.videoId
-                          ? 'bg-purple-600 text-white'
-                          : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                        }`}
-          >
-            <span>{p.emoji}</span>
-            <span>{p.label}</span>
-          </button>
-        ))}
+        {PLAYLISTS.map((playlist) => {
+          const isActive = currentVideoId === playlist.videoId
+
+          return (
+            <button
+              key={playlist.id}
+              type="button"
+              onClick={() =>
+                setVideo(playlist.videoId, playlist.label)
+              }
+              className={`
+                flex items-center gap-2
+                px-4 py-2.5
+                rounded-xl
+                text-sm font-medium
+                border
+                transition-all duration-200
+                ${
+                  isActive
+                    ? 'bg-[#e9b7a5] border-[#e9b7a5] text-[#3d3833] shadow-sm'
+                    : 'bg-[#fffaf4] border-[#e3d7ca] text-[#5d5148] hover:bg-[#f5e9dd] hover:border-[#d8c6b6]'
+                }
+              `}
+            >
+              <span>{playlist.emoji}</span>
+              <span>{playlist.label}</span>
+            </button>
+          )
+        })}
       </div>
     </div>
   )

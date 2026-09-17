@@ -8,6 +8,7 @@
   }
 
   body {
+    padding-bottom: 64px;
     margin: 0;
     background-color: #f7f1e8;
     color: #3d3833;
