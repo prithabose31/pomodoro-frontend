@@ -16,179 +16,201 @@ function GlobalMusicPlayer() {
     <div className="fixed bottom-0 left-0 right-0 z-[9999]">
 
       {/* =====================================================
-          EXPANDED PANEL
-          Positioned ABOVE the mini player
+          PLAYER PANEL
       ====================================================== */}
 
-      {isExpanded && (
-        <div
-          className="
-            absolute
-            bottom-full
-            left-0
-            right-0
-            bg-[#f7f1e8]
-            border-t
-            border-[#dfd1c3]
-            shadow-[0_-10px_35px_rgba(61,56,51,0.15)]
-          "
-        >
+      <div
+        className={`
+          absolute
+          bottom-full
+          left-0
+          right-0
+          bg-[#f7f1e8]
+          border-t
+          border-[#dfd1c3]
+          shadow-[0_-10px_35px_rgba(61,56,51,0.15)]
+          transition-opacity
+          duration-200
+          ${
+            isExpanded
+              ? 'opacity-100 visible'
+              : 'opacity-0 invisible pointer-events-none'
+          }
+        `}
+      >
 
-          <div className="max-w-4xl mx-auto px-4 py-5">
+        <div className="max-w-4xl mx-auto px-4 py-5">
 
-            {/* Close header */}
+          <div className="flex items-center justify-between mb-5">
 
-            <div className="flex items-center justify-between mb-5">
+            <div>
+              <h3 className="text-lg font-semibold text-[#3d3833]">
+                Music & YouTube
+              </h3>
 
-              <div>
-                <h3 className="text-lg font-semibold text-[#3d3833]">
-                  Music & YouTube
-                </h3>
-
-                <p className="text-xs text-[#9a8878] mt-1">
-                  Choose something to listen to while you focus.
-                </p>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => setIsExpanded(false)}
-                className="
-                  w-9
-                  h-9
-                  rounded-full
-                  bg-[#f2e6da]
-                  text-[#6d5d51]
-                  hover:bg-[#e9b7a5]
-                  transition
-                  flex
-                  items-center
-                  justify-center
-                "
-                title="Minimize player"
-              >
-                ↓
-              </button>
-
+              <p className="text-xs text-[#9a8878] mt-1">
+                Choose something to listen to while you focus.
+              </p>
             </div>
 
+            <button
+              type="button"
+              onClick={() => setIsExpanded(false)}
+              className="
+                w-9 h-9
+                rounded-full
+                bg-[#f2e6da]
+                text-[#6d5d51]
+                hover:bg-[#e9b7a5]
+                transition
+              "
+            >
+              ↓
+            </button>
 
-            {/* =================================================
-                CURRENT PLAYER
-            ================================================== */}
+          </div>
 
-            {currentVideoId && (
-              <div className="mb-5">
+          <AmbientPlaylists />
 
-                <div
-                  className="
-                    flex
-                    items-center
-                    justify-between
-                    gap-3
-                    px-4
-                    py-3
-                    mb-3
-                    rounded-2xl
-                    bg-[#fffaf4]
-                    border
-                    border-[#e3d7ca]
-                  "
-                >
+          <div className="border-t border-[#e3d7ca] my-5" />
 
-                  <div className="flex items-center gap-3 min-w-0">
+          <YouTubeSearch />
 
-                    <span className="text-xs font-semibold text-[#b46f59]">
-                      ▶ Playing
-                    </span>
+          {currentVideoId && (
+            <div className="mt-5">
 
-                    <span
-                      className="
-                        text-sm
-                        font-medium
-                        text-[#3d3833]
-                        truncate
-                      "
-                    >
-                      {currentTitle}
-                    </span>
+              <div
+                className="
+                  flex
+                  items-center
+                  justify-between
+                  gap-3
+                  px-4
+                  py-3
+                  rounded-2xl
+                  bg-[#fffaf4]
+                  border
+                  border-[#e3d7ca]
+                "
+              >
 
-                  </div>
+                <div className="flex items-center gap-3 min-w-0">
 
-                  <button
-                    type="button"
-                    onClick={clearVideo}
-                    className="
-                      text-xs
-                      text-[#9a8878]
-                      hover:text-[#b45f59]
-                      transition
-                    "
-                  >
-                    ⏹ Stop
-                  </button>
+                  <span className="text-xs font-semibold text-[#b46f59]">
+                    ▶ Playing
+                  </span>
+
+                  <span className="text-sm font-medium text-[#3d3833] truncate">
+                    {currentTitle}
+                  </span>
 
                 </div>
 
-
-                {/* YouTube iframe */}
-
-                <div
+                <button
+                  type="button"
+                  onClick={clearVideo}
                   className="
-                    relative
-                    w-full
-                    overflow-hidden
-                    rounded-2xl
-                    bg-[#201d1b]
+                    text-xs
+                    text-[#9a8878]
+                    hover:text-[#b45f59]
                   "
-                  style={{
-                    paddingBottom: '45%'
-                  }}
                 >
-
-                  <iframe
-                    className="
-                      absolute
-                      inset-0
-                      w-full
-                      h-full
-                    "
-                    src={`https://www.youtube.com/embed/${currentVideoId}?autoplay=1&rel=0`}
-                    title={currentTitle || 'FocusFlow Music'}
-                    allow="
-                      accelerometer;
-                      autoplay;
-                      clipboard-write;
-                      encrypted-media;
-                      gyroscope;
-                      picture-in-picture
-                    "
-                    allowFullScreen
-                  />
-
-                </div>
+                  ⏹ Stop
+                </button>
 
               </div>
-            )}
+
+            </div>
+          )}
+
+        </div>
+
+      </div>
 
 
-            {/* =================================================
-                PLAYLISTS
-            ================================================== */}
+      {/* =====================================================
+          PERMANENT YOUTUBE IFRAME
 
-            <AmbientPlaylists />
+          NEVER UNMOUNT THIS WHILE A VIDEO IS PLAYING.
 
+          Expanded:
+            normal size + visible
 
-            {/* Divider */}
+          Collapsed:
+            1px + transparent + off-screen
 
-            <div className="border-t border-[#e3d7ca] my-5" />
+          opacity is used instead of display:none so the
+          browser keeps the iframe alive.
+      ====================================================== */}
 
+      {currentVideoId && (
+        <div
+          className={`
+            ${
+              isExpanded
+                ? `
+                  absolute
+                  bottom-full
+                  left-1/2
+                  -translate-x-1/2
+                  w-full
+                  max-w-4xl
+                  px-4
+                  pb-[210px]
+                  pointer-events-none
+                `
+                : `
+                  absolute
+                  left-[-9999px]
+                  bottom-0
+                  w-[1px]
+                  h-[1px]
+                  opacity-0
+                  overflow-hidden
+                  pointer-events-none
+                `
+            }
+          `}
+        >
 
-            {/* =================================================
-                YOUTUBE SEARCH
-            ================================================== */}
+          <div
+            className={
+              isExpanded
+                ? `
+                  absolute
+                  bottom-0
+                  left-4
+                  right-4
+                  overflow-hidden
+                  rounded-2xl
+                  bg-[#201d1b]
+                  pointer-events-auto
+                `
+                : ''
+            }
+            style={
+              isExpanded
+                ? {
+                    height: '200px'
+                  }
+                : undefined
+            }
+          >
 
-            <YouTubeSearch />
+            <iframe
+              className="w-full h-full"
+              src={`https://www.youtube.com/embed/${currentVideoId}?autoplay=1&rel=0`}
+              title={currentTitle || 'FocusFlow Music'}
+              allow="
+                accelerometer;
+                autoplay;
+                clipboard-write;
+                encrypted-media;
+                gyroscope;
+                picture-in-picture
+              "
+              allowFullScreen
+            />
 
           </div>
 
@@ -198,7 +220,6 @@ function GlobalMusicPlayer() {
 
       {/* =====================================================
           MINI PLAYER
-          ALWAYS VISIBLE
       ====================================================== */}
 
       <div
@@ -212,31 +233,16 @@ function GlobalMusicPlayer() {
 
         <div className="max-w-6xl mx-auto px-4">
 
-          <div
-            className="
-              h-16
-              flex
-              items-center
-              justify-between
-              gap-4
-            "
-          >
-
-            {/* LEFT */}
+          <div className="h-16 flex items-center justify-between gap-4">
 
             <div className="flex items-center gap-3 min-w-0">
-
-              {/* Expand / collapse button */}
 
               <button
                 type="button"
                 onClick={() => setIsExpanded(prev => !prev)}
                 className="
-                  w-9
-                  h-9
-                  flex
-                  items-center
-                  justify-center
+                  w-9 h-9
+                  flex items-center justify-center
                   rounded-full
                   bg-[#f2e6da]
                   text-[#6d5d51]
@@ -244,21 +250,14 @@ function GlobalMusicPlayer() {
                   transition
                   flex-shrink-0
                 "
-                title={isExpanded ? 'Minimize player' : 'Open player'}
               >
                 {isExpanded ? '↓' : '↑'}
               </button>
 
-
-              {/* Music icon */}
-
               <div
                 className="
-                  w-9
-                  h-9
-                  flex
-                  items-center
-                  justify-center
+                  w-9 h-9
+                  flex items-center justify-center
                   rounded-full
                   bg-[#f5d8cc]
                   text-lg
@@ -267,9 +266,6 @@ function GlobalMusicPlayer() {
               >
                 🎵
               </div>
-
-
-              {/* Text */}
 
               <div className="min-w-0">
 
@@ -283,8 +279,7 @@ function GlobalMusicPlayer() {
 
                       <span
                         className="
-                          text-sm
-                          font-medium
+                          text-sm font-medium
                           text-[#3d3833]
                           truncate
                           max-w-[180px]
@@ -316,9 +311,6 @@ function GlobalMusicPlayer() {
 
             </div>
 
-
-            {/* RIGHT */}
-
             <div className="flex items-center gap-2 flex-shrink-0">
 
               {currentVideoId && (
@@ -326,14 +318,11 @@ function GlobalMusicPlayer() {
                   type="button"
                   onClick={clearVideo}
                   className="
-                    hidden
-                    sm:block
-                    text-xs
-                    font-medium
+                    hidden sm:block
+                    text-xs font-medium
                     text-[#9a8878]
                     hover:text-[#b45f59]
                     px-2
-                    transition
                   "
                 >
                   ⏹ Stop
@@ -344,13 +333,11 @@ function GlobalMusicPlayer() {
                 type="button"
                 onClick={() => setIsExpanded(prev => !prev)}
                 className="
-                  px-4
-                  py-2
+                  px-4 py-2
                   rounded-xl
                   bg-[#e9b7a5]
                   text-[#3d3833]
-                  text-xs
-                  font-semibold
+                  text-xs font-semibold
                   hover:bg-[#dfaa96]
                   transition
                 "
