@@ -1,7 +1,5 @@
 import { useState } from 'react'
-
 import { Link, useNavigate } from 'react-router-dom'
-
 import useAuthStore from '../store/authStore'
 
 function SignUp() {
@@ -21,8 +19,7 @@ function SignUp() {
     confirmPassword: ''
   })
 
-  const [validationError, setValidationError] =
-    useState('')
+  const [validationError, setValidationError] = useState('')
 
   const handleChange = (e) => {
     clearError()
@@ -38,15 +35,16 @@ function SignUp() {
     e.preventDefault()
 
     if (form.password !== form.confirmPassword) {
-      setValidationError(
-        'Passwords do not match.'
-      )
+      setValidationError('Passwords do not match.')
       return
     }
 
-    if (form.password.length < 8) {
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+
+    if (!passwordRegex.test(form.password)) {
       setValidationError(
-        'Password must be at least 8 characters.'
+        'Password must be at least 8 characters and include one uppercase letter, one lowercase letter, one number, and one special character (@$!%*?&).'
       )
       return
     }
@@ -78,23 +76,19 @@ function SignUp() {
       px-4
       py-10
     ">
-
       <div className="
         w-full
         max-w-md
         bg-[#FFFDF8]
         rounded-3xl
         p-7 sm:p-9
-
         border border-[#E8DED2]
-
         shadow-xl
         shadow-[#8B7765]/10
       ">
 
         {/* Logo */}
         <div className="text-center mb-8">
-
           <div className="
             flex
             items-center
@@ -139,7 +133,6 @@ function SignUp() {
           ">
             Create your account and get focused
           </p>
-
         </div>
 
         {/* Error */}
@@ -185,20 +178,15 @@ function SignUp() {
               className="
                 w-full
                 px-4 py-3
-
                 bg-[#FFFDF8]
                 text-[#3D3833]
-
                 rounded-xl
                 border border-[#DCCFC2]
-
                 focus:border-[#C97862]
                 focus:outline-none
                 focus:ring-2
                 focus:ring-[#C97862]/15
-
                 placeholder-[#B0A59A]
-
                 transition
               "
             />
@@ -226,20 +214,15 @@ function SignUp() {
               className="
                 w-full
                 px-4 py-3
-
                 bg-[#FFFDF8]
                 text-[#3D3833]
-
                 rounded-xl
                 border border-[#DCCFC2]
-
                 focus:border-[#C97862]
                 focus:outline-none
                 focus:ring-2
                 focus:ring-[#C97862]/15
-
                 placeholder-[#B0A59A]
-
                 transition
               "
             />
@@ -262,28 +245,35 @@ function SignUp() {
               name="password"
               value={form.password}
               onChange={handleChange}
-              placeholder="At least 8 characters"
+              placeholder="Create a password"
               required
               className="
                 w-full
                 px-4 py-3
-
                 bg-[#FFFDF8]
                 text-[#3D3833]
-
                 rounded-xl
                 border border-[#DCCFC2]
-
                 focus:border-[#C97862]
                 focus:outline-none
                 focus:ring-2
                 focus:ring-[#C97862]/15
-
                 placeholder-[#B0A59A]
-
                 transition
               "
             />
+
+            <p className="
+              mt-2
+              text-xs
+              text-[#81776D]
+              leading-relaxed
+            ">
+              Password must contain at least 8 characters,
+              one uppercase letter, one lowercase letter,
+              one number, and one special character
+              (@$!%*?&).
+            </p>
           </div>
 
           {/* Confirm Password */}
@@ -308,20 +298,15 @@ function SignUp() {
               className="
                 w-full
                 px-4 py-3
-
                 bg-[#FFFDF8]
                 text-[#3D3833]
-
                 rounded-xl
                 border border-[#DCCFC2]
-
                 focus:border-[#C97862]
                 focus:outline-none
                 focus:ring-2
                 focus:ring-[#C97862]/15
-
                 placeholder-[#B0A59A]
-
                 transition
               "
             />
@@ -333,23 +318,17 @@ function SignUp() {
             disabled={isLoading}
             className="
               w-full
-
               bg-[#D49A84]
               hover:bg-[#C88972]
-
               disabled:bg-[#D8B9AC]
               disabled:cursor-not-allowed
-
               text-white
               py-3
               rounded-xl
-
               font-semibold
-
               transition-all
               duration-200
               hover:-translate-y-0.5
-
               shadow-sm
             "
           >
